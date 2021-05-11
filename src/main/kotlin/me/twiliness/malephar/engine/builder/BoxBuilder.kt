@@ -23,6 +23,7 @@ open class BoxBuilder : FlexBuilder() {
             boxSizing,
             display,
             position,
+            overflow,
             flexDirection,
             flexGrow,
             flexShrink,
@@ -39,12 +40,33 @@ open class BoxBuilder : FlexBuilder() {
         )
     }
 
-    override fun flex(init: FlexBuilder.() -> Unit) : Unit =
-        FlexBuilder().apply(init).build().let { child = it }
+    override fun flex(init: FlexBuilder.() -> Unit): Unit =
+        FlexBuilder().apply(init).build().let {
+            assert(child == null)
+            child = it
+        }
 
-    override fun box(init: BoxBuilder.() -> Unit) : Unit =
-        BoxBuilder().apply(init).build().let { child = it }
+    override fun box(init: BoxBuilder.() -> Unit): Unit =
+        BoxBuilder().apply(init).build().let {
+            assert(child == null)
+            child = it
+        }
 
-    override fun sizedBox(init: SizedBoxBuilder.() -> Unit) : Unit =
-        SizedBoxBuilder().apply(init).build().let { child = it }
+    override fun sizedBox(init: SizedBoxBuilder.() -> Unit): Unit =
+        SizedBoxBuilder().apply(init).build().let {
+            assert(child == null)
+            child = it
+        }
+
+    override fun center(init: CenterBuilder.() -> Unit): Unit =
+        CenterBuilder().apply(init).build().let {
+            assert(child == null)
+            child = it
+        }
+
+    override fun image(init: ImageBuilder.() -> Unit): Unit =
+        ImageBuilder().apply(init).build().let {
+            assert(child == null)
+            child = it
+        }
 }

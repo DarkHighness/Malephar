@@ -7,7 +7,7 @@ import me.twiliness.malephar.engine.props.*
 import java.awt.Graphics2D
 import java.awt.image.BufferedImage
 
-class SizedBoxComponent(
+open class SizedBoxComponent(
     child: IComponent?,
     decoration: BoxDecoration?,
     margin: BoxMargin?,
@@ -27,6 +27,7 @@ class SizedBoxComponent(
     val maxHeightPercent: Float?,
     display: Display,
     position: Position,
+    overflow: Overflow,
     flexDirection: FlexDirection,
     flexGrow: Float,
     flexShrink: Float,
@@ -48,6 +49,7 @@ class SizedBoxComponent(
     boxSizing,
     display,
     position,
+    overflow,
     flexDirection,
     flexGrow,
     flexShrink,
@@ -91,5 +93,9 @@ class SizedBoxComponent(
 
             return@let it
         }
+    }
+
+    override fun componentName(): String {
+        return "SizedBox"
     }
 }

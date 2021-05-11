@@ -6,6 +6,7 @@ import me.twiliness.malephar.engine.props.*
 import me.twiliness.malephar.engine.util.BoundRect
 import me.twiliness.malephar.engine.util.Tools
 import java.awt.BasicStroke
+import java.awt.Color
 import java.awt.Graphics2D
 import java.awt.image.BufferedImage
 
@@ -17,6 +18,7 @@ open class BoxComponent(
     val boxSizing: BoxSizing,
     display: Display,
     position: Position,
+    overflow: Overflow,
     flexDirection: FlexDirection,
     flexGrow: Float,
     flexShrink: Float,
@@ -37,6 +39,7 @@ open class BoxComponent(
         listOf(child),
     display,
     position,
+    overflow,
     flexDirection,
     flexGrow,
     flexShrink,
@@ -74,12 +77,6 @@ open class BoxComponent(
         context: TemplateContext,
         debug: Boolean
     ) {
-        if (debug) {
-            Tools.drawDebugRect(graphics, state.toBoundRect(parentAnchor))
-
-            println("${this::class.simpleName}: \n${state.outputToString()}")
-        }
-
         if (decoration != null) {
             val color = graphics.color
             val rect = state.toBoundRect(parentAnchor)
@@ -110,6 +107,12 @@ open class BoxComponent(
 
             children.first().render(canvas, graphics, childState, parentAnchor.offset(state), context, debug)
         }
+
+        if (debug) {
+            Tools.drawDebugRect(graphics, state.toBoundRect(parentAnchor), componentName(), Color.red)
+
+            context.logDebugInfo(this, state)
+        }
     }
 
     override fun collect(
@@ -118,7 +121,7 @@ open class BoxComponent(
         parentState: ComponentState,
         context: TemplateContext
     ): ComponentState {
-        val componentState = createComponentState()
+        val componentState = super.collect(canvas, graphics, parentState, context)
 
         if (margin != null) {
             componentState.setMargin(FlexEdge.LEFT, margin.left)
@@ -141,12 +144,16 @@ open class BoxComponent(
             }
         }
 
-        if (children.isNotEmpty()) {
-            val childState = children.first().collect(canvas, graphics, parentState, context)
-
-            componentState.pushChildState(childState)
-        }
+//        if (children.isNotEmpty()) {
+//            val childState = children.first().collect(canvas, graphics, parentState, context)
+//
+//            componentState.pushChildState(childState)
+//        }
 
         return componentState
+    }
+
+    override fun componentName(): String {
+        return "Box"
     }
 }

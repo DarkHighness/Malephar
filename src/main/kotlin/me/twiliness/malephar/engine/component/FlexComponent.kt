@@ -12,7 +12,7 @@ open class FlexComponent(
     protected val children: List<IComponent>,
     protected val display: Display,
     protected val position: Position,
-//    protected val flexFit: FlexFit,
+    protected val overflow: Overflow,
     protected val flexDirection: FlexDirection,
     protected val flexGrow: Float,
     protected val flexShrink: Float,
@@ -35,16 +35,21 @@ open class FlexComponent(
         context: TemplateContext,
         debug: Boolean
     ) {
-        if (debug) {
-            Tools.drawDebugRect(graphics, state.toBoundRect(parentAnchor.x, parentAnchor.y), Color.green)
-
-            println("${this::class.simpleName}: \n${state.outputToString()}")
-        }
-
-        for(idx in children.indices) {
+        for (idx in children.indices) {
             val childState = state.getChildAt(idx)
 
             children[idx].render(canvas, graphics, childState, parentAnchor.offset(state), context, debug)
+        }
+
+        if (debug) {
+            Tools.drawDebugRect(
+                graphics,
+                state.toBoundRect(parentAnchor.x, parentAnchor.y),
+                componentName(),
+                Color.green
+            )
+
+            context.logDebugInfo(this, state)
         }
     }
 
@@ -58,13 +63,15 @@ open class FlexComponent(
             .let {
                 it.display = display
                 it.positionType = position
+                it.overflow = overflow
+
                 it.flexDirection = flexDirection
 
                 it.flexGrow = flexGrow
                 it.flexShrink = flexShrink
                 it.wrap = flexWrap
 
-                when(flexBasis.unit) {
+                when (flexBasis.unit) {
                     FlexValueUnit.POINT -> it.setFlexBasis(flexBasis.value)
                     FlexValueUnit.PERCENT -> it.setFlexBasisPercent(flexBasis.value)
                     FlexValueUnit.AUTO -> it.setFlexBasisAuto()
@@ -85,6 +92,10 @@ open class FlexComponent(
                     it.addChildAt(children[idx].collect(canvas, graphics, parentState, context), idx)
 
                 return@let it
-        }
+            }
+    }
+
+    override fun componentName(): String {
+        return "Flex"
     }
 }

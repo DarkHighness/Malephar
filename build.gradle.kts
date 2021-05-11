@@ -18,8 +18,10 @@ dependencies {
     runtimeOnly("net.mamoe", "mirai-core", miraiVersion)
 
     val jacksonVersion = "2.12.3"
-    implementation("com.fasterxml.jackson.module","jackson-module-kotlin",jacksonVersion)
-    implementation("com.fasterxml.jackson.dataformat","jackson-dataformat-yaml",jacksonVersion)
+    implementation("com.fasterxml.jackson.module", "jackson-module-kotlin", jacksonVersion)
+    implementation("com.fasterxml.jackson.dataformat", "jackson-dataformat-yaml", jacksonVersion)
+
+    implementation("org.slf4j:slf4j-simple:1.7.30")
 }
 
 kotlin.sourceSets.all {

@@ -28,15 +28,35 @@ fun ComponentState.singleChildState() = when (this.childCount) {
 }
 
 fun ComponentState.toBoundRect(anchor: Point): BoundRect = toBoundRect(anchor.x, anchor.y)
-fun ComponentState.outputToString() : String {
+fun ComponentState.outputToString(): String {
+    val overflowString = "Overflow: ${this.overflow}"
     val layoutString = "Layout: [${this.layoutX},${this.layoutY}]"
     val layoutSizeString = "Layout: Size: [${this.layoutWidth},${this.layoutHeight}]"
     val sizeString = "Size: [${this.width},${this.height}]"
-    val marginString = "Margin: [${this.getMargin(FlexEdge.TOP)},${this.getMargin(FlexEdge.LEFT)},${this.getMargin(FlexEdge.RIGHT)},${this.getMargin(FlexEdge.BOTTOM)}]"
-    val paddingString = "Padding: [${this.getPadding(FlexEdge.TOP)},${this.getPadding(FlexEdge.LEFT)},${this.getPadding(FlexEdge.RIGHT)},${this.getPadding(FlexEdge.BOTTOM)}]"
-    val borderString = "Border: [${this.getBorder(FlexEdge.TOP)},${this.getBorder(FlexEdge.LEFT)},${this.getBorder(FlexEdge.RIGHT)},${this.getBorder(FlexEdge.BOTTOM)}]"
-
-    return listOf(layoutString, layoutSizeString, sizeString, marginString, paddingString, borderString).joinToString("\n")
+    val marginString =
+        "Margin: [${this.getMargin(FlexEdge.TOP)},${this.getMargin(FlexEdge.LEFT)},${this.getMargin(FlexEdge.RIGHT)},${
+            this.getMargin(FlexEdge.BOTTOM)
+        }]"
+    val paddingString =
+        "Padding: [${this.getPadding(FlexEdge.TOP)},${this.getPadding(FlexEdge.LEFT)},${this.getPadding(FlexEdge.RIGHT)},${
+            this.getPadding(FlexEdge.BOTTOM)
+        }]"
+    val borderString =
+        "Border: [${this.getBorder(FlexEdge.TOP)},${this.getBorder(FlexEdge.LEFT)},${this.getBorder(FlexEdge.RIGHT)},${
+            this.getBorder(FlexEdge.BOTTOM)
+        }]"
+    val flexProperty = "JustifyContent: ${this.justifyContent} AlignItems: ${this.alignItems} \n" +
+            "AlignContent: ${this.alignContent} AlignSelf: ${this.alignSelf}"
+    return listOf(
+        overflowString,
+        layoutString,
+        layoutSizeString,
+        sizeString,
+        marginString,
+        paddingString,
+        borderString,
+        flexProperty
+    ).joinToString("\n")
 }
 
 fun ComponentState.toBoundRect(dx: Int, dy: Int) = BoundRect(

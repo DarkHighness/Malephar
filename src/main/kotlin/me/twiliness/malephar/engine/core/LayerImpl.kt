@@ -2,6 +2,7 @@ package me.twiliness.malephar.engine.core
 
 import me.twiliness.malephar.engine.TemplateContext
 import me.twiliness.malephar.engine.api.*
+import me.twiliness.malephar.engine.props.Overflow
 import java.awt.Color
 import java.awt.Graphics2D
 import java.awt.Toolkit
@@ -48,6 +49,7 @@ class LayerImpl(private val child: IComponent) : ILayer {
         val childState = child.collect(canvasImage, graphics, layerState, context)
 
         layerState.pushRootState(childState)
+        layerState.overflow = Overflow.HIDDEN
         layerState.calculateLayout(width.toFloat(), height.toFloat())
         layerState.print()
 

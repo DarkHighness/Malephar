@@ -32,11 +32,16 @@ object Tools {
         graphics.font = fontBackup
     }
 
-    fun drawDebugRect(graphics: Graphics2D, boundRect: BoundRect, color: Color = Color.RED) {
+    fun drawDebugRect(
+        graphics: Graphics2D,
+        boundRect: BoundRect,
+        componentName: String? = null,
+        color: Color = Color.RED
+    ) {
         graphics.color = color
 
         val stroke = graphics.stroke as BasicStroke
-        val debugStroke = BasicStroke(2f, BasicStroke.CAP_ROUND,BasicStroke.JOIN_BEVEL)
+        val debugStroke = BasicStroke(2f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL)
 
         graphics.stroke = debugStroke
 
@@ -46,7 +51,7 @@ object Tools {
             boundRect.width - stroke.lineWidth.roundToInt(),
             boundRect.height - stroke.lineWidth.roundToInt())
 
-        val caller = getComponentName()
+        val caller = componentName ?: getComponentName()
         val debugFont = graphics.font.deriveFont(11f)
 
         drawStringCenter(caller, graphics, debugFont, boundRect)
@@ -54,4 +59,5 @@ object Tools {
         graphics.stroke = stroke
         graphics.color = Color.white
     }
+
 }
